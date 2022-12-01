@@ -1,0 +1,78 @@
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+class eater {
+    public :
+    
+    int eaterId;
+    
+    vector<int>foodItem;
+};
+
+
+int main()
+{
+    cout<<"Enter the number of consumers (eaters) : ";
+    int n_eaters;
+    cin>>n_eaters;
+    
+    eater obj[n_eaters];
+    map<int,int>mymap;
+    
+    for(int i=0;i<n_eaters;i++){
+        cout<<endl<<endl;
+        cout<<"Enter eaterID for eater "<<i+1<<" : ";
+        cin>>obj[i].eaterId;
+        int temp;
+        cout<<"Enter No of food items in the order : ";
+        cin>>temp;
+        if(temp==0){
+            cout<<"No food ordered by this eater ..\n";
+            continue;
+        }
+        set<int>myset;
+        cout<<"Now enter details of fooditemID for eaterID "<<obj[i].eaterId<<" : \n";
+        for(int k=0;k<temp;k++){
+            int temp2;
+            cout<<"Enter fooditemID of item "<<k+1<<" : ";
+            cin>>temp2;
+            if(myset.find(temp2)!=myset.end()){
+                cout<<"Error : fooditemID is already present in this order...Re enter another item...\n";
+                k--;
+            }
+            else{
+                obj[i].foodItem.push_back(temp2);
+                myset.insert(temp2);
+                
+                mymap[temp2]++;
+            }
+        }
+        
+    }
+    cout<<endl<<endl;
+    vector<pair<int,int>>ans;
+    
+    for(auto it : mymap){
+        ans.push_back({it.second,it.first});
+    }
+    if(ans.size()==0){
+        cout<<"No food is ordered....";
+        return 0;
+    }
+    sort(ans.begin(),ans.end());
+    
+    
+    cout<<"fooditemID of max ordered items are : \n";
+    int itr = ans.size()-1;
+    for(int i=0;i<3;i++){
+        cout<<"item no "<<i+1<<" : "<<ans[itr].second<<"\n";
+        itr--;
+        if(itr<0 && i<2){
+            cout<<"only above items are ordered...(less than 3 items)";
+            break;
+        }
+    }
+    return 0;
+}
